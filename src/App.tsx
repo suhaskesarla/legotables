@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Trophy, Star, Zap, RotateCcw, Play, Settings, Package, Award, Target, Flame, Home, Car, Rocket, Heart, Castle, Plane, User, LogOut, Save } from 'lucide-react';
+import { Trophy, Star, Zap, RotateCcw, Play, Settings, Package, Home, Car, Rocket, Heart, Castle, Plane, User, LogOut, Save } from 'lucide-react';
 
 interface GameStats {
   correct: number;
@@ -233,7 +233,7 @@ function App() {
       const savedBricks = localStorage.getItem('legoMathBricks');
       if (savedBricks) {
         const parsedBricks = JSON.parse(savedBricks);
-        setBricksEarned(parsedBricks.map((brick: any) => ({
+        setBricksEarned(parsedBricks.map((brick: BrickEarned & { timestamp: string }) => ({
           ...brick,
           timestamp: new Date(brick.timestamp)
         })));
@@ -249,7 +249,7 @@ function App() {
       const savedBuilds = localStorage.getItem('legoMathBuilds');
       if (savedBuilds) {
         const parsedBuilds = JSON.parse(savedBuilds);
-        setCompletedBuilds(parsedBuilds.map((build: any) => ({
+        setCompletedBuilds(parsedBuilds.map((build: CompletedBuild & { completedAt: string }) => ({
           ...build,
           completedAt: new Date(build.completedAt)
         })));
@@ -509,10 +509,11 @@ function App() {
           break;
         case 'table_master_2':
         case 'table_master_5':
-        case 'table_master_10':
+        case 'table_master_10': {
           const tableNum = parseInt(achievement.id.split('_')[2]);
           newProgress = newStats.tablesCompleted.has(tableNum) ? 12 : 0;
           break;
+        }
       }
 
       if (newProgress >= achievement.maxProgress && !unlocked) {
@@ -1430,5 +1431,3 @@ function App() {
 }
 
 export default App;
-
-export default App
